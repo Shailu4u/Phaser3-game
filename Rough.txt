@@ -1,0 +1,9 @@
+1. Login Page
+2. Scroreboard Page (Play button)
+3. Play game
+
+
+
+
+
+- Game designing
