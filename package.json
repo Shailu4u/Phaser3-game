@@ -17,6 +17,7 @@
   "author": "Shailendra Kumar",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.16.4",
     "phaser": "^3.3.0",
     "webpack": "^4.2.0"
   },

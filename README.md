@@ -1,8 +1,14 @@
 # Phaser3-Game
-A simple HTML5 game development using Phaser 3 version with ES6.
+A simple HTML5 game development using Phaser 3 with ES6.
+
+### Demo:
+https://phaser3.herokuapp.com/
 
 ## Installation
 npm install
 
-### Run the Project
-npm run dev
+### Run the Project in development
+npm run build
+npm run start
+
+
