@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 const width = window.innerWidth < 1300 ? 1325: window.innerWidth;
-const height = window.innerHeight - 56;
+const height = window.innerHeight;
 // set container height
 document.querySelector("#canvas-container").style.height = height+'px';
 
@@ -15,41 +15,35 @@ let score = 0;
 let gameOver = false;
 let scoreText, gameOverText;
 let trophy;
-<<<<<<< HEAD
-=======
 let gameText, music;
->>>>>>> c533398b420b831e86dd23bc7f1ea79327fbefc6
 
 class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: 'GameScene' });
-        this.jumpVelocity =  -250;
+        this.playerVelocity =  -250;
     }
    
     preload () {
-        // this.load.image('sky', 'assets/sky.png');
         this.load.image('background-clouds', './assets/clouds.png');
-        this.load.image('ground1', 'assets/platform1.png');
-        this.load.image('ground2', 'assets/base.png');
-        this.load.image('ground3', 'assets/platform3.png');
-        this.load.image('ground4', 'assets/platform4.png');
-        this.load.image('ground5', 'assets/platform5.png');
-        this.load.image('ground6', 'assets/platform6.png');
-        this.load.image('star', 'assets/star.png');
-        this.load.image('bomb', 'assets/bomb.png');
+        this.load.image('ground2', './assets/base.png');
+        this.load.image('ground3', './assets/platform3.png');
+        this.load.image('ground4', './assets/platform4.png');
+        this.load.image('ground5', './assets/platform5.png');
+        this.load.image('ground6', './assets/platform6.png');
+        this.load.image('star', './assets/star.png');
+        this.load.image('bomb', './assets/bomb.png');
+
         // player animations
-        this.load.atlas('player', './assets/player2.png', './assets/player3.json', './assets/player3.json');
-        this.load.atlas('food', './assets/food.png', './assets/food.json', './assets/food.json');
+        this.load.atlas('player', './assets/player2.png', './assets/player3.json');
+        this.load.atlas('food', './assets/food.png', './assets/food.json');
         this.load.image('trophy', './assets/trophy.png');
 
-        // load sound
-<<<<<<< HEAD
-=======
-        this.load.audio('music', './assets/true.mp3');
->>>>>>> c533398b420b831e86dd23bc7f1ea79327fbefc6
-        this.load.audio('eatfood', './assets/eat-food.wav');
-        this.load.audio('jumpsmall', './assets/jump-high.wav');
-        this.load.audio('jumphigh', './assets/jump-small.wav');
+        // load game sounds
+        this.load.audio('clapping', './assets/clapping.mp3');
+        this.load.audio('power', './assets/power.mp3');
+        this.load.audio('jumping', './assets/jumping.mp3');
+        this.load.audio('hit', './assets/hit.mp3');
+
     }
     
     create () {       
@@ -132,10 +126,11 @@ class GameScene extends Phaser.Scene {
             child.setCollideWorldBounds(true);
         });
 
-        // add sounds to the game        
-        this.sound.add('eatfood');
-        this.sound.add('jumpsmall');
-        this.sound.add('jumphigh');
+        // add sounds to the game
+        this.sound.add('clapping');
+        this.sound.add('power');
+        this.sound.add('jumping');
+        this.sound.add('hit');
 
         // Add trophy
         trophy = this.physics.add.sprite(width - 105, 100, 'trophy');
@@ -162,7 +157,7 @@ class GameScene extends Phaser.Scene {
 
         this.physics.add.overlap(player, trophy, this.collectTrophy, null, this);
 
-         this.physics.add.collider(player, bombs, this.hitBomb, null, this);
+        this.physics.add.collider(player, bombs, this.hitBomb, null, this);
 
         // set bounds so the camera won't go outside the game world
         this.cameras.main.setBounds(0, 0, width, height);
@@ -197,22 +192,23 @@ class GameScene extends Phaser.Scene {
 
         if (cursors.up.isDown && player.body.touching.down)
         {
-            if(score > 100) {
-                score -= 10; // Engergy descreases for every jump
-                scoreText.setText('Energy: ' + score);
-            }
-            // TODO: increase velocity based on backend value
+            // if(score > 100) {
+            //     score -= 10; // Engergy descreases for every jump
+            //     scoreText.setText('Energy: ' + score);
+            // }
+            console.log(this.playerVelocity);
+            // Done: increase velocity based on velocity value
             if(score < 90) {
-                player.body.setVelocityY(this.jumpVelocity); 
-                this.sound.play('jumphigh');
+                player.body.setVelocityY(this.playerVelocity); 
+                this.sound.play('power');
             }
             else if(score >= 90 && score < 250) {    
                 player.body.setVelocityY(-320); 
-                this.sound.play('jumphigh');
+                this.sound.play('power');
             }
-            else if(score >= 250) {      
+            else if(score >= 220) {      
                 player.body.setVelocityY(-400); 
-                this.sound.play('jumpsmall');
+                this.sound.play('jumping');
             }            
             
         }
@@ -220,7 +216,7 @@ class GameScene extends Phaser.Scene {
 
     collectEnergy (player, foodItem) {
         foodItem.disableBody(true, true);
-        this.sound.play('eatfood');
+        this.sound.play('hit');
 
         //  Add and update the score
         score += 10;
@@ -243,9 +239,10 @@ class GameScene extends Phaser.Scene {
         }
     }
 
-    // TODO: Collect the trophy
+    // Done: Collect the trophy
     collectTrophy(player, trophy) {
         console.log("You Won the Trophy!");
+        this.sound.play('clapping');
         trophy.disableBody(true, true);
     }
 

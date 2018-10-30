@@ -1,16 +1,14 @@
 import Phaser from 'phaser';
 import GameScene from './scenes/game-scene';
 
-const height = window.innerHeight - 56;
-// set container height
-document.querySelector("#exercise").style.height = height+'px';
+const height = window.innerHeight;
 
 const config = {
   type: Phaser.AUTO,
   pixelArt: false,
   roundPixels: false,
   width: window.innerWidth,
-  height: window.innerHeight - 56,
+  height: window.innerHeight,
   parent: 'canvas-container',
   physics: {
       default: 'arcade',
